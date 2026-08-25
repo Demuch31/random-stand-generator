@@ -13,12 +13,12 @@
     function randomStand() {
         document.getElementById("stand-image").innerHTML = null;
         document.getElementById("stand-name").textContent = null;
-        fetch('https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@main/stands-api.json')
+        fetch('https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.1/stands-api.json')
             .then(r => r.json())
             .then(d => {
                 let randomStand = d[Math.floor(Math.random() * d.length)];
                 let img = document.createElement('img');
-                img.src = `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@main/${randomStand.image}`;
+                img.src = `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.1/${randomStand.image}`;
                 img.style.height = '200px';
                 document.getElementById("stand-image").appendChild(img);
                 document.getElementById("stand-name").textContent = randomStand.name;

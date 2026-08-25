@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Random Stand Generator</title>
+</head>
+<main>
+    <div id="stand-image"></div>
+    <h2 id="stand-name"></h2>
+    <input type="button" onclick="randomStand()" value="Random Stand" />
+</main>
+<script>
+    function randomStand() {
+        document.getElementById("stand-image").innerHTML = null;
+        document.getElementById("stand-name").textContent = null;
+        fetch('https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@main/stands-api.json')
+            .then(r => r.json())
+            .then(d => {
+                let randomStand = d[Math.floor(Math.random() * d.length)];
+                let img = document.createElement('img');
+                img.src = `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@main/${randomStand.image}`;
+                img.style.height = '200px';
+                document.getElementById("stand-image").appendChild(img);
+                document.getElementById("stand-name").textContent = randomStand.name;
+            })
+            .catch(e => console.error(e));
+    }
+</script>
+
+</html>

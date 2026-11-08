@@ -1,30 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
     <title>Random Stand Generator</title>
-</head>
-<main>
-    <div id="stand-image"></div>
-    <h2 id="stand-name"></h2>
-    <input type="button" onclick="randomStand()" value="Random Stand" />
-</main>
-<script>
-    function randomStand() {
-        document.getElementById("stand-image").innerHTML = null;
-        document.getElementById("stand-name").textContent = null;
-        fetch('https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.1/stands-api.json')
-            .then(r => r.json())
-            .then(d => {
-                let randomStand = d[Math.floor(Math.random() * d.length)];
-                let img = document.createElement('img');
-                img.src = `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.1/${randomStand.image}`;
-                img.style.height = '200px';
-                document.getElementById("stand-image").appendChild(img);
-                document.getElementById("stand-name").textContent = randomStand.name;
-            })
-            .catch(e => console.error(e));
+    <style>
+      * {
+        margin: 0;
+        font-family: Tahoma, sans-serif;
+      }
+      body {
+        background-color: rgb(17, 17, 17);
+      }
+      main {
+        padding: 5em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      div {
+        height: 15rem;
+      }
+      h2 {
+        color: white;
+        display: flex;
+        align-items: center;
+        height: 5rem;
+      }
+      input[type="button"] {
+        background-color: rgb(94, 98, 102);
+        padding: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="stand-image"></div>
+      <h2 id="stand-name">Stand</h2>
+      <input type="button" onclick="renderRandomStand()" value="Random Stand" />
+    </main>
+  </body>
+  <script>
+    async function loadRandomStand() {
+      const r = await fetch(
+        "https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.2/data/index.json",
+      );
+      const data = await r.json();
+      const r2 = await fetch(
+        `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.2/data/${data.parts[Math.floor(Math.random() * data.parts.length)].file}`,
+      );
+      const stands = await r2.json();
+      const randomStand = stands[Math.floor(Math.random() * stands.length)];
+      return randomStand;
     }
-</script>
-
+    async function renderRandomStand() {
+      const randomStand = await loadRandomStand();
+      loadRandomStand();
+      document.getElementById("stand-image").innerHTML = "";
+      document.getElementById("stand-name").textContent = "";
+      const img = document.createElement("img");
+      img.src = `https://cdn.jsdelivr.net/gh/demuch31/jjba-stands-api@0.0.2/${randomStand.image}`;
+      img.style.height = "100%";
+      document.getElementById("stand-image").appendChild(img);
+      document.getElementById("stand-name").textContent = randomStand.name;
+    }
+  </script>
 </html>
